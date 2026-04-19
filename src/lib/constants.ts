@@ -3,6 +3,7 @@ export type Asset = (typeof ASSETS)[number];
 
 export const TIMEFRAMES = ["1H", "4H", "Daily", "Weekly"] as const;
 export type Timeframe = (typeof TIMEFRAMES)[number];
+export type BacktestInterval = "1h" | "4h" | "1d" | "1wk";
 
 export const YAHOO_SYMBOLS: Record<Asset, string> = {
   BTC: "BTC-USD",
@@ -14,7 +15,7 @@ export const YAHOO_SYMBOLS: Record<Asset, string> = {
   SOL: "SOL-USD",
 };
 
-export const YAHOO_INTERVALS: Record<Timeframe, string> = {
+export const YAHOO_INTERVALS: Record<Timeframe, BacktestInterval> = {
   "1H": "1h",
   "4H": "4h",
   Daily: "1d",

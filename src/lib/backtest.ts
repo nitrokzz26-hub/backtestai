@@ -36,6 +36,9 @@ export async function runMovingAverageBacktest(params: {
 }): Promise<BacktestMetrics> {
   const symbol = YAHOO_SYMBOLS[params.asset];
   const interval = YAHOO_INTERVALS[params.timeframe];
+  // yahoo-finance2 does not expose a native "4h" interval in its type surface.
+  // We proxy 4h requests through 60m bars for compatibility.
+  const providerInterval = interval === "4h" ? "60m" : interval;
   const { fast, slow } = pickWindows(params.strategy);
 
   const mod = await import("yahoo-finance2");
@@ -46,7 +49,7 @@ export async function runMovingAverageBacktest(params: {
   let quotes: { date: Date; close: number }[] = [];
   try {
     const chart = await yahooFinance.chart(symbol, {
-      interval: interval as "1h" | "4h" | "1d" | "1wk",
+      interval: providerInterval,
       period1,
     });
     quotes =
